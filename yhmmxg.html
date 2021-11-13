@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<style>
+	.main{
+		width: 1200px;
+		height: 704px;
+		/* border: 3px solid red ; */
+		margin: 0px auto;
+		background-image:url(images/bg.jpg);
+		opacity: 0.6;
+		font-size: 25px;
+		position: relative;
+	}
+	.new{
+		/* border: 2px solid black; */
+		width: 360px;
+		height: 150px;
+		position: absolute;
+		top: 200px;
+		left: 32%;
+		background-color: antiquewhite;
+		text-align: center;
+		padding: 20px;
+	}
+	#ts{
+		color: #f00;
+		font-size: 14px;
+	}
+	#untip,#pwd1tip,#pwd2tip{
+		color: #f00;
+	}
+	</style>
+	<title>用户登录测试</title>
+	<script>
+	window.onload=function(){
+		var ts=document.getElementById("ts");
+		var un=document.getElementById("un");
+		var untip=document.getElementById("untip");
+		var pwd1=document.getElementById("pwd1");
+		var pwd2=document.getElementById("pwd2");
+		var pwd1tip=document.getElementById("pwd1tip");
+		var pwd2tip=document.getElementById("pwd2tip");
+		var s1=document.getElementById("s1");
+		
+		un.onfocus=function(){
+			untip.innerText="";
+		}
+		pwd1.onfocus=function(){
+			pwd1tip.innerText="";
+			pwd2tip.innerText="";
+			pwd2.value="";
+		}
+		if(pwd1.value==""){
+			pwd1.innerText="密码不能为空";
+			event.preventDefault();
+		}else if(pwd1.value.length<6 || pwd1.value.length>16){
+			pwd1tip.innerText="密码长度为6-16位";
+			event.preventDefault();
+		}
+		if(pwd2.value==""){
+			pwd2.innerText="密码不能为空";
+			event.preventDefault();
+		}else if(pwd1.value != pwd2.value){
+			pwd2tip.innerText="两次密码不一致,请重新输入";
+			pwd1.value="";
+			pwd2.value="";
+			event.preventDefault();
+		}
+	}
+	</script>
+</head>
+<body>
+	<div class="main">
+	   <form action="yhmmxg.php" method="post">
+		   <div class="new">
+		      用户名:<input type="text" name="yhName" autocomplete="off" id="un"><div id="untip"></div><br>
+	          新的密码:<input type="password" name="yhpwd" id="pwd1"><div id="pwd1tip"></div><br>
+	          确认密码:<input type="password" name="yhpwd1" id="pwd2"><div id="pwd2tip"></div><br>
+	          <input type="submit" name="submit" value="确认修改" id="s1">
+		   </div>
+	   </form>
+	</div>
+</body>
+</html>
