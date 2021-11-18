@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>用户注册</title>
+	<script src="js/mm.js"></script>
+	<style>
+		.main {
+			width: 1200px;
+			height: 704px;
+			/* border: 3px solid red ; */
+			margin: 0px auto;
+			background-image: url(images/bg.jpg);
+			opacity: 0.6;
+			position: relative;
+		}
+
+		.login {
+			/* border: 2px solid black; */
+			width: 360px;
+			height: 260px;
+			position: absolute;
+			top: 200px;
+			left: 32%;
+			background-color: antiquewhite;
+			padding: 20px;
+		}
+
+		.login input {
+			height: 25px;
+			width: 200px;
+			margin: 5px;
+		}
+
+		h3 {
+			/* background-color: #FFFF00; */
+			width: 180px;
+			position: relative;
+			left: 39%;
+		}
+
+		.dl {
+			width: 80px;
+			height: 30px;
+			font-size: 18px;
+			margin-top: 20px;
+			margin-left: 30px;
+		}
+
+		#pwd {
+			width: 200px;
+		}
+
+		#yz {
+			/* border: 1px solid red; */
+			/* margin-left: 35px; */
+			margin-top: 3px;
+		}
+
+		#ruo,
+		#zh,
+		#gao {
+			display: none;
+			background-color: #FFFF00;
+			width: 30px;
+			height: 25px;
+			text-align: center;
+			color: #fff;
+		}
+
+		#div1 {
+			color: #f00;
+			font-size: 12px;
+			display: none;
+		}
+
+		#yzm {
+			background: url(images/yzm.jpg);
+		}
+
+		#yzmtext {
+			width: 100px;
+		}
+
+		.ts {
+			color: #f00;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="main">
+		<h3>请用户注册</h3>
+		<form action="yhzc.php" method="post" id="loginform" name="loginform">
+			<div class="login">
+				用户名:<input type="text" name="yhName" autocomplete="off" maxlength="8" id="user"><br>
+				密&nbsp;&nbsp;&nbsp;码:<input type="password" name="yhpwd" id="pwd"><br>
+				<div id="yz">密码强度:&nbsp;<span id="ruo">弱</span><span id="zh">中</span><span id="gao">高</span></div>
+				<div id="div1">密码长度应为6-16个字符</div><span id="mmts"></span>
+				确认密码:<input type="password" name="yhpwd2" id="qrmm"><br>
+				验证码：<canvas id="yzm" width="150" height="50"></canvas><br>
+				<a href="javascript:;" id="a1">看不清，换一张</a><input type="text" id="yzmtext" name="yzmtext"><span
+					id="ts"></span><br>
+				<input type="button" name="button" value="注册" class="dl" id="dl">
+			</div>
+		</form>
+	</div>
+</body>
+<script>
+	function $(id) {
+		return document.getElementById(id);
+	}
+	var dl = $("dl");
+	var a1 = document.getElementById("a1");
+	var yzm = document.getElementById("yzm");
+	var cxt = yzm.getContext("2d");
+	var validate = "";
+	var position = 0;
+	function showYzm() {
+		cxt.clearRect(0, 0, 150, 50);//清空画布区域
+		var str = "012345678910ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+		var x, y;
+		var fontSize = 30;
+		cxt.beginPath();
+		cxt.fillStyle = "#aaaaaa";
+		for (var i = 0; i < 4; i++) {
+			x = 20 + (i * 30);
+			y = 25 + Math.ceil(Math.random() * 20);
+			fontSize = 10 + Math.ceil(Math.random() * 20);
+			cxt.font = "bold " + fontSize + "px Arial";
+			position = Math.ceil(Math.random() * 1000) % 36;
+			cxt.fillText(str.substr(position, 1), x, y, 300);
+			validate = validate + str.substr(position, 1);
+		}
+	}
+	showYzm();
+	a1.onclick = function () {
+		validate = "";
+		showYzm();
+	}
+	var yzmtext = $("yzmtext");
+	var ts = document.getElementById("ts");
+	dl.onclick = function () {
+		var user = $("user").value;
+		var pwd = $("pwd").value;
+		var qrmm = $("qrmm").value;
+		var user = $("user");
+		var mmts = $("mmts");
+		if (yzmtext.value.length <= 0) {
+			ts.innerHTML = "请输入验证码"
+			ts.className = "ts"
+			return false;
+		}
+		else if (yzmtext.value != validate) {
+			ts.innerHTML = "验证码错误"
+			ts.className = "ts"
+			return false;
+		}
+
+		if (user.length <= 0) {
+			alert("用户名不能为空");
+			$("user").focus();
+			return false;
+		}
+
+		if (pwd.length <= 0) {
+			alert("密码不能为空");
+			$("pwd").focus();
+			return false;
+		}
+
+		if (pwd.length < 6) {
+			alert("密码不能少于6位数");
+			$("pwd").focus();
+			return false;
+		}
+
+		if (pwd.length > 16) {
+			alert("密码不能大于16位数");
+			$("pwd").focus();
+			return false;
+		}
+		if (pwd != qrmm) {
+			ts.innerHTML = "两次密码不一致"
+			ts.className = "ts";
+			return false;
+		}
+		$("loginform").submit();
+	}
+</script>
+
+</html>
